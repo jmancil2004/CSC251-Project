@@ -49,4 +49,117 @@ public class Policy
         this.heightInches = heightInches;
         this.weightPounds = weightPounds;
     }
+
+    // Getters
+    public int getPolicyNumber()
+    {
+        return policyNumber;
+    }
+
+    public String getProviderName()
+    {
+        return providerName;
+    }
+
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public String getLastName()
+    {
+        return lastName;
+    }
+
+    public int getAge()
+    {
+        return age;
+    }
+
+    public String getSmokingStatus()
+    {
+        return smokingStatus;
+    }
+
+    public double getHeightInches()
+    {
+        return heightInches;
+    }
+
+    public double getWeightPounds()
+    {
+        return weightPounds;
+    }
+
+    // Setters
+    public void setPolicyNumber(int policyNumber)
+    {
+        this.policyNumber = policyNumber;
+    }
+
+    public void setProviderName(String providerName)
+    {
+        this.providerName = providerName;
+    }
+
+    public void setFirstName(String firstName)
+    {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName)
+    {
+        this.lastName = lastName;
+    }
+
+    public void setAge(int age)
+    {
+        this.age = age;
+    }
+
+    public void setSmokingStatus(String smokingStatus)
+    {
+        this.smokingStatus = smokingStatus;
+    }
+
+    public void setHeightInches(double heightInches)
+    {
+        this.heightInches = heightInches;
+    }
+
+    public void setWeightPounds(double weightPounds)
+    {
+        this.weightPounds = weightPounds;
+    }
+
+    // BMI calculation (no stale data)
+    public double getBMI()
+    {
+        return (weightPounds * BMI_FACTOR) / (heightInches * heightInches);
+    }
+
+    // Policy price calculation (no stale data)
+    public double getPolicyPrice()
+    {
+        double price = BASE_FEE;
+
+        if (age > 50)
+        {
+            price += AGE_FEE;
+        }
+
+        if (smokingStatus.equalsIgnoreCase("smoker"))
+        {
+            price += SMOKER_FEE;
+        }
+
+        double bmi = getBMI();
+
+        if (bmi > BMI_THRESHOLD)
+        {
+            price += (bmi - BMI_THRESHOLD) * BMI_MULTIPLIER;
+        }
+
+        return price;
+    }
 }
