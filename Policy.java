@@ -21,9 +21,11 @@ public class Policy
     private static final double BMI_FACTOR = 703.0;
     private static final double BMI_THRESHOLD = 35.0;
     private static final double BMI_MULTIPLIER = 20.0;
-
-    // No-arg constructor
-    public Policy()
+    
+    /**
+ * Default constructor that initializes policy with default values.
+ */
+     public Policy()
     {
         policyNumber = 0;
         providerName = "";
@@ -35,7 +37,17 @@ public class Policy
         weightPounds = 0.0;
     }
 
-    // Full constructor
+/**
+ * Constructs a Policy object with all attributes.
+ * @param policyNumber the policy number
+ * @param providerName the provider name
+ * @param firstName the policyholder's first name
+ * @param lastName the policyholder's last name
+ * @param age the policyholder's age
+ * @param smokingStatus smoker or non-smoker
+ * @param heightInches height in inches
+ * @param weightPounds weight in pounds
+ */
     public Policy(int policyNumber, String providerName, String firstName,
                   String lastName, int age, String smokingStatus,
                   double heightInches, double weightPounds)
@@ -132,13 +144,19 @@ public class Policy
         this.weightPounds = weightPounds;
     }
 
-    // BMI calculation (no stale data)
+/**
+ * Calculates and returns the BMI.
+ * @return the BMI value
+ */
     public double getBMI()
     {
         return (weightPounds * BMI_FACTOR) / (heightInches * heightInches);
     }
 
-    // Policy price calculation (no stale data)
+    /**
+ * Calculates and returns the policy price.
+ * @return the total policy price
+ */
     public double getPolicyPrice()
     {
         double price = BASE_FEE;
