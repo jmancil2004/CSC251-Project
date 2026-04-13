@@ -1,177 +1,128 @@
 /**
  * Policy class models an insurance policy.
- * Stores policyholder information and calculates BMI and policy price.
+ * A Policy has a PolicyHolder.
  */
 public class Policy
 {
-    // Fields
     private int policyNumber;
     private String providerName;
-    private String firstName;
-    private String lastName;
-    private int age;
-    private String smokingStatus;
-    private double heightInches;
-    private double weightPounds;
+    private PolicyHolder policyHolder;
 
-    // Constants
     private static final double BASE_FEE = 600.0;
     private static final double AGE_FEE = 75.0;
     private static final double SMOKER_FEE = 100.0;
-    private static final double BMI_FACTOR = 703.0;
     private static final double BMI_THRESHOLD = 35.0;
     private static final double BMI_MULTIPLIER = 20.0;
-    
+
+    private static int policyCount = 0;
+
     /**
- * Default constructor that initializes policy with default values.
- */
-     public Policy()
+     * Default constructor.
+     */
+    public Policy()
     {
         policyNumber = 0;
         providerName = "";
-        firstName = "";
-        lastName = "";
-        age = 0;
-        smokingStatus = "non-smoker";
-        heightInches = 0.0;
-        weightPounds = 0.0;
+        policyHolder = new PolicyHolder("", "", 0, "non-smoker", 0.0, 0.0);
+        policyCount++;
     }
 
-/**
- * Constructs a Policy object with all attributes.
- * @param policyNumber the policy number
- * @param providerName the provider name
- * @param firstName the policyholder's first name
- * @param lastName the policyholder's last name
- * @param age the policyholder's age
- * @param smokingStatus smoker or non-smoker
- * @param heightInches height in inches
- * @param weightPounds weight in pounds
- */
-    public Policy(int policyNumber, String providerName, String firstName,
-                  String lastName, int age, String smokingStatus,
-                  double heightInches, double weightPounds)
+    /**
+     * Constructs a Policy object with all attributes.
+     * @param policyNumber the policy number
+     * @param providerName the provider name
+     * @param policyHolder the policy holder object
+     */
+    public Policy(int policyNumber, String providerName, PolicyHolder policyHolder)
     {
         this.policyNumber = policyNumber;
         this.providerName = providerName;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.smokingStatus = smokingStatus;
-        this.heightInches = heightInches;
-        this.weightPounds = weightPounds;
+        this.policyHolder = new PolicyHolder(policyHolder); // deep copy
+        policyCount++;
     }
 
-    // Getters
+    /**
+     * Gets the policy number.
+     * @return the policy number
+     */
     public int getPolicyNumber()
     {
         return policyNumber;
     }
 
+    /**
+     * Gets the provider name.
+     * @return the provider name
+     */
     public String getProviderName()
     {
         return providerName;
     }
 
-    public String getFirstName()
+    /**
+     * Gets a copy of the policy holder.
+     * @return a copy of the policy holder
+     */
+    public PolicyHolder getPolicyHolder()
     {
-        return firstName;
+        return new PolicyHolder(policyHolder);
     }
 
-    public String getLastName()
+    /**
+     * Gets the number of Policy objects created.
+     * @return the number of Policy objects
+     */
+    public static int getPolicyCount()
     {
-        return lastName;
+        return policyCount;
     }
 
-    public int getAge()
-    {
-        return age;
-    }
-
-    public String getSmokingStatus()
-    {
-        return smokingStatus;
-    }
-
-    public double getHeightInches()
-    {
-        return heightInches;
-    }
-
-    public double getWeightPounds()
-    {
-        return weightPounds;
-    }
-
-    // Setters
+    /**
+     * Sets the policy number.
+     * @param policyNumber the policy number to set
+     */
     public void setPolicyNumber(int policyNumber)
     {
         this.policyNumber = policyNumber;
     }
 
+    /**
+     * Sets the provider name.
+     * @param providerName the provider name to set
+     */
     public void setProviderName(String providerName)
     {
         this.providerName = providerName;
     }
 
-    public void setFirstName(String firstName)
+    /**
+     * Sets the policy holder using a copy.
+     * @param policyHolder the policy holder to set
+     */
+    public void setPolicyHolder(PolicyHolder policyHolder)
     {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName)
-    {
-        this.lastName = lastName;
-    }
-
-    public void setAge(int age)
-    {
-        this.age = age;
-    }
-
-    public void setSmokingStatus(String smokingStatus)
-    {
-        this.smokingStatus = smokingStatus;
-    }
-
-    public void setHeightInches(double heightInches)
-    {
-        this.heightInches = heightInches;
-    }
-
-    public void setWeightPounds(double weightPounds)
-    {
-        this.weightPounds = weightPounds;
-    }
-
-/**
- * Calculates and returns the BMI.
- * @return the BMI value
- */
-    public double getBMI()
-    {
-        return (weightPounds * BMI_FACTOR) / (heightInches * heightInches);
+        this.policyHolder = new PolicyHolder(policyHolder);
     }
 
     /**
- * Calculates and returns the policy price.
- * @return the total policy price
- */
+     * Calculates and returns the policy price.
+     * @return the total policy price
+     */
     public double getPolicyPrice()
     {
         double price = BASE_FEE;
 
-        if (age > 50)
+        if (policyHolder.getAge() > 50)
         {
             price += AGE_FEE;
         }
 
-        if (smokingStatus.equalsIgnoreCase("smoker"))
+        if (policyHolder.getSmokingStatus().equalsIgnoreCase("smoker"))
         {
             price += SMOKER_FEE;
         }
 
-        double bmi = getBMI();
+        double bmi = policyHolder.getBMI();
 
         if (bmi > BMI_THRESHOLD)
         {
@@ -179,5 +130,17 @@ public class Policy
         }
 
         return price;
+    }
+
+    /**
+     * Returns the Policy information as a string.
+     * @return the Policy information
+     */
+    public String toString()
+    {
+        return "Policy Number: " + policyNumber + "\n\n" +
+               "Provider Name: " + providerName + "\n\n" +
+               policyHolder.toString() + "\n\n" +
+               "Policy Price: $" + String.format("%.2f", getPolicyPrice());
     }
 }
